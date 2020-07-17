@@ -1,7 +1,5 @@
 const Mock = require('mockjs')
 
-const Random = Mock.Random
-
 const data = Mock.mock({
   'items|30': [{
     id: '@id',
@@ -17,7 +15,7 @@ const data = Mock.mock({
 
 module.exports = [
   {
-    url: '/vue-admin-template/table/list',
+    url: '/vue-admin-template/reagent/list',
     type: 'get',
     response: config => {
       const items = data.items

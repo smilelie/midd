@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <h1>此页不在需要</h1>
     <el-row :gutter="20">
       <el-col :span="16">
         <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch"></el-input>
@@ -10,7 +9,9 @@
       </el-col>
 
       <el-col :span="4">
-        <el-button type="primary" @click="onSearch">添加新试剂</el-button>
+        <router-link :to="'/reagent/create/'">
+          <el-button type="primary" @click="onCreate">添加新试剂</el-button>
+        </router-link>
       </el-col>
     </el-row>
     <br />
@@ -28,7 +29,7 @@
       <el-table-column label="药品名称">
         <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
-      <el-table-column label="英文名称" width="110" align="center">
+      <el-table-column label="英文名称" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.nameEn }}</span>
         </template>
@@ -51,12 +52,17 @@
           <el-tag :type="scope.row.level | levelFilter">{{ scope.row.level }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column class-name="option-button" label="试剂操作" width="240" align="center">
+        <el-button type="primary" size="mini">查看</el-button>
+        <el-button type="primary" size="mini">取出</el-button>
+        <el-button type="primary" size="mini">归还</el-button>
+      </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { fetchList, createReagent } from '@/api/reagent'
 
 export default {
   filters: {
@@ -73,7 +79,7 @@ export default {
     return {
       list: null,
       listLoading: false,
-      searchText: '',
+      searchText: ''
     }
   },
 
@@ -82,9 +88,14 @@ export default {
       console.log('fetchData')
       this.fetchData()
     },
+    onCreate () {
+      console.log('create reagent.')
+      // this.createReagent()
+      // this.$router.push('/reagent/create')
+    },
     fetchData () {
       this.listLoading = true
-      getList().then(response => {
+      fetchList().then(response => {
         this.list = response.data.items
         this.listLoading = false
         console.log('list: ' + this.list)
