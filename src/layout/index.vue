@@ -1,10 +1,11 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
+    <!-- <sidebar class="sidebar-container" /> -->
+
     <div class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
+        <titlebar />
       </div>
       <app-main />
     </div>
@@ -12,16 +13,16 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from './components'
+import { Titlebar, AppMain } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Layout',
   components: {
-    Navbar,
-    Sidebar,
+    Titlebar,
     AppMain
+
   },
   mixins: [ResizeMixin],
   computed: {
@@ -83,7 +84,8 @@ export default {
   top: 0;
   right: 0;
   z-index: 9;
-  width: calc(100% - #{$sideBarWidth});
+  // width: calc(100% - #{$sideBarWidth});
+  width: 100%;
   transition: width 0.28s;
 }
 

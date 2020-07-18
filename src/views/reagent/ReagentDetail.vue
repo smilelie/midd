@@ -5,32 +5,32 @@
       :model="postForm"
       :rules="rules"
       label-width="120px"
-      :label-position="left"
+      label-position="left"
       class="form-container"
     >
       <el-form-item label="药品名称" prop="name">
-        <el-input v-model="postForm.name"></el-input>
+        <el-input v-model="postForm.name" />
       </el-form-item>
       <el-form-item label="药品英文名称" prop="nameEn">
-        <el-input v-model="postForm.nameEn"></el-input>
+        <el-input v-model="postForm.nameEn" />
       </el-form-item>
       <el-form-item label="化学分子式" prop="formula">
-        <el-input v-model="postForm.formula"></el-input>
+        <el-input v-model="postForm.formula" />
       </el-form-item>
       <el-form-item label="规格" prop="stardand">
-        <el-input v-model="postForm.stardand"></el-input>
+        <el-input v-model="postForm.stardand" />
       </el-form-item>
       <el-form-item label="重量/容量" prop="weight">
-        <el-input v-model="postForm.weight"></el-input>
+        <el-input v-model="postForm.weight" />
       </el-form-item>
       <el-form-item label="物理状态" prop="status">
-        <el-input v-model="postForm.status"></el-input>
+        <el-input v-model="postForm.status" />
       </el-form-item>
       <el-form-item label="管控级别" prop="level">
         <el-select v-model="postForm.level" placeholder="请选择管控级别">
-          <el-option label="普通" value="普通"></el-option>
-          <el-option label="危险" value="危险"></el-option>
-          <el-option label="易燃易爆" value="易燃易爆"></el-option>
+          <el-option label="普通" value="普通" />
+          <el-option label="危险" value="危险" />
+          <el-option label="易燃易爆" value="易燃易爆" />
         </el-select>
       </el-form-item>
       <el-form-item class="postInfo-container-item">
@@ -42,9 +42,8 @@
 </template>
 
 <script>
-
+import { fetchReagent } from '@/api/reagent'
 const defaultForm = {
-  status: 'draft',
   name: '', // 药品名称
   nameEn: '', // 英文名称
   formula: '', // 分子式
@@ -164,7 +163,6 @@ export default {
     resetForm (formName) {
       console.log('resetForm')
       this.$refs[formName].resetFields()
-
     }
   }
 }
