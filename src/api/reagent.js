@@ -9,6 +9,7 @@ export function fetchList (params) {
   //   method: 'get',
   //   params
   // })
+  debugger
   return window.callSvc('reagent.list', params)
 }
 

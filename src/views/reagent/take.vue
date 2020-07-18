@@ -82,7 +82,9 @@ export default {
     return {
       list: null,
       listLoading: false,
-      searchText: ''
+      searchText: '',
+      // 取药默认查询在库数据
+      loc_state: 1
     }
   },
 
@@ -98,8 +100,14 @@ export default {
     },
     fetchData () {
       this.listLoading = true
-      fetchList().then(response => {
-        this.list = response.data.items
+      var param = {
+        's': this.searchText,
+        'loc_state': this.loc_state,
+        has_loc: true
+      }
+      fetchList(param).then(response => {
+        debugger
+        this.list = response.data
         this.listLoading = false
         console.log('list: ' + this.list)
       })
