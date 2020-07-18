@@ -3,20 +3,22 @@ import request from '@/utils/request'
 const base_url = '/vue-element-admin/'
 
 export function fetchList (params) {
-  const url = '/vue-admin-template/reagent/list'
-  return request({
-    url,
-    method: 'get',
-    params
-  })
+  // const url = '/vue-admin-template/reagent/list'
+  // return request({
+  //   url,
+  //   method: 'get',
+  //   params
+  // })
+  return window.callSvc('reagent.list', params)
 }
 
 export function fetchReagent (id) {
-  return request({
-    url: base_url + 'reagent/detail',
-    method: 'get',
-    params: { id }
-  })
+  return window.callSvc('login.login', data)
+  // return request({
+  //   url: base_url + 'reagent/detail',
+  //   method: 'get',
+  //   params: { id }
+  // })
 }
 
 export function createReagent (data) {

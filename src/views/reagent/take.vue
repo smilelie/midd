@@ -53,8 +53,11 @@
         </template>
       </el-table-column>
       <el-table-column class-name="option-button" label="试剂操作" width="240" align="center">
-        <el-button type="primary" size="mini">查看</el-button>
-        <el-button type="primary" size="mini">编辑</el-button>
+        <template slot-scope="scope">
+          <router-link :to="'/reagent/edit/'+scope.row.id">
+            <el-button type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
+          </router-link>
+        </template>
         <el-button type="primary" size="mini">删除</el-button>
       </el-table-column>
     </el-table>

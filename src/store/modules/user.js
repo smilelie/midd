@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -6,7 +6,8 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    userId: -1,
+    isAdmin: false
   }
 }
 
@@ -22,8 +23,11 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+  SET_IS_ADMIN: (state, isAdmin) => {
+    state.isAdmin = isAdmin
+  },
+  SET_USER_ID: (state, userId) => {
+    state.userId = userId
   }
 }
 
@@ -38,40 +42,15 @@ const actions = {
         // TODO 是否登陆成功
         console.log('login responsed: ' + data)
         commit('SET_TOKEN', 'data.token')
-        debugger
         commit('SET_NAME', data.name)
+        commit('SET_IS_ADMIN', data.isAdmin)
+        commit('SET_USER_ID', data.userId)
         setToken('data.token')
         resolve()
       }).catch(error => {
         reject(error)
       })
     })
-  },
-
-  // get user info
-  getInfo ({ commit, state }, userInfo) {
-
-    const { name, avatar } = userInfo
-
-    commit('SET_NAME', name)
-    commit('SET_AVATAR', avatar)
-    // return new Promise((resolve, reject) => {
-    //   getInfo(state.token).then(response => {
-    //     const { data } = response
-    //     console.log(data)
-    //     if (!data) {
-    //       return reject('Verification failed, please Login again.')
-    //     }
-
-    //     const { name, avatar } = data
-
-    //     commit('SET_NAME', name)
-    //     commit('SET_AVATAR', avatar)
-    //     resolve(data)
-    //   }).catch(error => {
-    //     reject(error)
-    //   })
-    // })
   },
 
   // user logout
