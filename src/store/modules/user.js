@@ -29,23 +29,22 @@ const mutations = {
 
 const actions = {
   // user login
-  login ({ commit }, data) {
+  login ({ commit }, userInfo) {
     console.log('store/modules/user/ -> login')
-    // const { username, password } = userInfo
-    commit('SET_TOKEN', data.token)
-    setToken(data.token)
-    // return new Promise((resolve, reject) => {
-    //   login({ username: username.trim(), password: password }).then(response => {
-    //     const { data } = response
-    //     // TODO 是否登陆成功
-    //     console.log('login responsed: ' + data)
-    //     commit('SET_TOKEN', data.token)
-    //     setToken(data.token)
-    //     resolve()
-    //   }).catch(error => {
-    //     reject(error)
-    //   })
-    // })
+    const { username, password } = userInfo
+    return new Promise((resolve, reject) => {
+      login({ username: username.trim(), password: password }).then(response => {
+        const { data } = response
+        // TODO 是否登陆成功
+        console.log('login responsed: ' + data)
+        commit('SET_TOKEN', data.token)
+        commit('SET_NAME', data.name)
+        setToken(data.token)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
   },
 
   // get user info
