@@ -15,6 +15,40 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+import './config'
+
+window.callSvc = function (apiInfo, params, fn) {
+  var err = apiSvc.svc(apiInfo, params || {}, function (ok, rslt, ext) {
+    if (ok) {
+      if (fn) fn(ok, rslt, ext)
+    } else {
+      if (ext) {
+        if (ext.accessDenied) {
+          // 清除token信息并跳转到登录页面
+          store.commit('logout')
+          router.replace({
+            path: 'login',
+            query: {
+              redirect: router.currentRoute.fullPath
+            }
+          })
+          return
+        } else if (ext.refresh) {
+          // 刷新页面
+          window.location.reload()
+          return
+        }
+      }
+      if (fn) fn(ok, rslt, ext)
+    }
+  })
+  if (err && fn) {
+    fn(false, null, {
+      clientErr: err
+    })
+  }
+}
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
