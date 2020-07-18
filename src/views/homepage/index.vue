@@ -17,7 +17,7 @@
         </router-link>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-button type="primary" size="mini" @click="logout">退出系统</el-button>
+        <el-button type="primary" size="mini" @click="logout">重新登录</el-button>
       </el-row>
     </div>
   </div>
@@ -28,16 +28,33 @@ export default {
   data () {
     return {
       url: '@/assets/texture/1208.jpg',
-      fit: 'fill',
+      fit: 'fill'
     }
   },
-
+  computed: {
+    // isLogin: function () {
+    //   const name=this.$store.getters.name || ''
+    //   console.log
+    //   return name !== ''
+    // }
+  },
   methods: {
-
+    isLogin: function () {
+      const name = this.$store.getters.name || ''
+      console.log(name)
+      return name !== ''
+    },
     async logout () {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    takeReagent () {
+      console.log('takeReagent')
+    },
+    returnReagent () {
+      console.log('returnReagent')
     }
+
   }
 }
 
@@ -53,7 +70,7 @@ export default {
 }
 
 .menu_buttons {
-  margin: 20% auto;
+  margin: 15% auto;
 }
 
 .el-button {

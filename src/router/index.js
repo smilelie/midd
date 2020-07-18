@@ -52,9 +52,6 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-
-
-
   {
     path: '/reagent',
     component: Layout,
@@ -79,6 +76,20 @@ export const constantRoutes = [
         name: 'ReagentEdit',
         component: () => import('@/views/reagent/edit'),
         meta: { title: '试剂详情', noCache: true, icon: 'edit' },
+        hidden: true
+      },
+      {
+        path: 'take',
+        name: 'ReagentTake',
+        component: () => import('@/views/reagent/take'),
+        meta: { title: '试剂取出', noCache: true, icon: 'edit' },
+        hidden: true
+      },
+      {
+        path: 'store',
+        name: 'ReagentStore',
+        component: () => import('@/views/reagent/store'),
+        meta: { title: '试剂归还', noCache: true, icon: 'edit' },
         hidden: true
       }
     ]
