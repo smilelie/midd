@@ -29,42 +29,49 @@ const mutations = {
 
 const actions = {
   // user login
-  login ({ commit }, userInfo) {
+  login ({ commit }, data) {
     console.log('store/modules/user/ -> login')
-    const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        //TODO 是否登陆成功
-        console.log('login responsed: ' + data)
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+    // const { username, password } = userInfo
+    commit('SET_TOKEN', data.token)
+    setToken(data.token)
+    // return new Promise((resolve, reject) => {
+    //   login({ username: username.trim(), password: password }).then(response => {
+    //     const { data } = response
+    //     // TODO 是否登陆成功
+    //     console.log('login responsed: ' + data)
+    //     commit('SET_TOKEN', data.token)
+    //     setToken(data.token)
+    //     resolve()
+    //   }).catch(error => {
+    //     reject(error)
+    //   })
+    // })
   },
 
   // get user info
-  getInfo ({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+  getInfo ({ commit, state }, userInfo) {
 
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
+    const { name, avatar } = userInfo
 
-        const { name, avatar } = data
+    commit('SET_NAME', name)
+    commit('SET_AVATAR', avatar)
+    // return new Promise((resolve, reject) => {
+    //   getInfo(state.token).then(response => {
+    //     const { data } = response
+    //     console.log(data)
+    //     if (!data) {
+    //       return reject('Verification failed, please Login again.')
+    //     }
 
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
+    //     const { name, avatar } = data
+
+    //     commit('SET_NAME', name)
+    //     commit('SET_AVATAR', avatar)
+    //     resolve(data)
+    //   }).catch(error => {
+    //     reject(error)
+    //   })
+    // })
   },
 
   // user logout

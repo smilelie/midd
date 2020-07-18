@@ -64,6 +64,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import '@/config'
 
 export default {
   name: 'Login',
@@ -119,13 +120,30 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            console.log('--> handleLogin: ' + this.redirect)
-            this.$router.push({ path: this.redirect || '/' })
+
+          window.callSvc('login.login', this.loginForm, function (ok, rslt, ext) {
+            console.log(ok)
+            console.log(rslt)
+            console.log(ext)
             this.loading = false
-          }).catch(() => {
-            this.loading = false
+            if (ok) {
+              this.$store.dispatch('user/login', this.loginForm)
+              console.log('--> handleLogin: ' + this.redirect)
+              this.$router.push({ path: this.redirect || '/' })
+
+            }
+
+            else {
+              console.log(ext)
+            }
           })
+          // this.$store.dispatch('user/login', this.loginForm).then(() => {
+          //   console.log('--> handleLogin: ' + this.redirect)
+          //   this.$router.push({ path: this.redirect || '/' })
+          //   this.loading = false
+          // }).catch(() => {
+          //   this.loading = false
+          // })
         } else {
           console.log('error submit!!')
           return false
