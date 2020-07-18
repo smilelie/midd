@@ -34,12 +34,13 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
+        const data = response
         // TODO 是否登陆成功
         console.log('login responsed: ' + data)
-        commit('SET_TOKEN', data.token)
+        commit('SET_TOKEN', 'data.token')
+        debugger
         commit('SET_NAME', data.name)
-        setToken(data.token)
+        setToken('data.token')
         resolve()
       }).catch(error => {
         reject(error)

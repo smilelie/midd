@@ -86,7 +86,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: 'admin1'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -121,29 +121,15 @@ export default {
         if (valid) {
           this.loading = true
 
-          window.callSvc('login.login', this.loginForm, function (ok, rslt, ext) {
-            console.log(ok)
-            console.log(rslt)
-            console.log(ext)
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            console.log('--> handleLogin: ' + this.redirect)
+            this.$router.push({ path: this.redirect || '/' })
             this.loading = false
-            if (ok) {
-              this.$store.dispatch('user/login', this.loginForm)
-              console.log('--> handleLogin: ' + this.redirect)
-              this.$router.push({ path: this.redirect || '/' })
-
-            }
-
-            else {
-              console.log(ext)
-            }
+          }).catch((err) => {
+            this.loading = false
+            console.log(err)
+            this.$message.error(err.msg)
           })
-          // this.$store.dispatch('user/login', this.loginForm).then(() => {
-          //   console.log('--> handleLogin: ' + this.redirect)
-          //   this.$router.push({ path: this.redirect || '/' })
-          //   this.loading = false
-          // }).catch(() => {
-          //   this.loading = false
-          // })
         } else {
           console.log('error submit!!')
           return false
