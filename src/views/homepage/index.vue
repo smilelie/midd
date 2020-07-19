@@ -7,7 +7,7 @@
         </router-link>
       </el-row>
       <el-row type="flex" justify="center">
-        <router-link to="/reagent/store">
+        <router-link to="/reagent/take">
           <el-button type="primary">归还药品</el-button>
         </router-link>
       </el-row>
