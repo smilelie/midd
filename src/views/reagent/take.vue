@@ -1,5 +1,35 @@
 <template>
   <div class="app-container">
+    <el-dialog title :visible.sync="dialogDetail">
+      <el-form :model="dataDetail">
+        <el-form-item label="cas编号" prop="cas">
+          <el-input v-model="cas" />
+        </el-form-item>
+        <el-form-item label="药品名称" prop="name">
+          <el-input v-model="name_cn" />
+        </el-form-item>
+        <el-form-item label="药品英文名称" prop="nameEn">
+          <el-input v-model="name_en" />
+        </el-form-item>
+        <el-form-item label="化学分子式" prop="formula">
+          <el-input v-model="formula" />
+        </el-form-item>
+        <el-form-item label="位置信息" label-width="120px">
+          <el-select v-model="locationVal" placeholder="请选择位置">
+            <el-option v-for="item in locations" :key="item.id" :label="item.id" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="takeReagent">取药</el-button>
+        <el-button type="primary" @click="storeReagent">归还</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="提示" :visible.sync="dialogWaitVisible" width="30%">
+      <span>等待刷卡中。。。</span>
+    </el-dialog>
+
     <el-row :gutter="20">
       <el-col :span="16">
         <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch" />
@@ -10,7 +40,7 @@
 
       <el-col :span="4">
         <router-link :to="'/reagent/create/'">
-          <el-button type="primary" @click="onCreate">添加新试剂</el-button>
+          <el-button type="success" @click="onCreate">添加新试剂</el-button>
         </router-link>
       </el-col>
     </el-row>
@@ -23,21 +53,24 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="索引" width="80">
         <template slot-scope="scope">{{ scope.$index }}</template>
       </el-table-column>
+      <el-table-column align="center" label="ID" width="120">
+        <template slot-scope="scope">{{ scope.row.cas }}</template>
+      </el-table-column>
       <el-table-column label="药品名称">
-        <template slot-scope="scope">{{ scope.row.name }}</template>
+        <template slot-scope="scope">{{ scope.row.names | nameFilter }}</template>
       </el-table-column>
       <el-table-column label="英文名称" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.nameEn }}</span>
+          <span>{{ scope.row.names | enNameFilter }}</span>
         </template>
       </el-table-column>
       <el-table-column label="化学分子式" width="110" align="center">
         <template slot-scope="scope">{{ scope.row.formula }}</template>
       </el-table-column>
-      <el-table-column label="规格">
+      <!-- <el-table-column label="规格">
         <template slot-scope="scope">{{ scope.row.stardard }}</template>
       </el-table-column>
       <el-table-column label="重量/容量">
@@ -45,27 +78,39 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="物理状态" width="90" align="center">
         <template slot-scope="scope">{{ scope.row.status }}</template>
-      </el-table-column>
+      </el-table-column>-->
       <!-- 危险、易燃易爆、普通 -->
-      <el-table-column class-name="status-col" label="管控级别" align="center">
+      <!-- <el-table-column class-name="status-col" label="管控级别" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.level | levelFilter">{{ scope.row.level }}</el-tag>
         </template>
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column class-name="option-button" label="试剂操作" width="240" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/reagent/edit/'+scope.row.id">
-            <el-button type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
-          </router-link>
+          <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-edit"
+            plain
+            @click="showDetail(scope.row)"
+          >查看</el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-delete"
+            plain
+            @click="removeReagent(scope.row.cas)"
+          >删除</el-button>
         </template>
-        <el-button type="primary" size="mini">删除</el-button>
+
+        <!-- <el-button type="primary" size="mini" icon="el-icon-delete" @click="removeReagent">删除</el-button> -->
       </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/reagent'
+import { fetchList, unlockReagent } from '@/api/reagent'
 
 export default {
   filters: {
@@ -76,6 +121,14 @@ export default {
         危险: 'danger'
       }
       return statusMap[level]
+    },
+    nameFilter (names) {
+      const nameList = names.map((name) => name.name_cn)
+      return nameList.join()
+    },
+    enNameFilter (names) {
+      const nameList = names.map((name) => name.name_en)
+      return nameList.join()
     }
   },
   data () {
@@ -84,11 +137,73 @@ export default {
       listLoading: false,
       searchText: '',
       // 取药默认查询在库数据
-      loc_state: 1
+      loc_state: 1,
+      dialogDetail: false,
+      dialogWaitVisible: false,
+      dataDetail: null,
+      cas: '',
+      name_cn: '',
+      name_en: '',
+      formula: '',
+      locations: null,
+      locationVal: ''
     }
   },
 
   methods: {
+    takeReagent () {
+      this.dialogDetail = false
+      this.unlock(1)
+    },
+    storeReagent () {
+      this.dialogDetail = false
+      this.unlock(2)
+    },
+    unlock (typeTake) {
+      this.$message.info('开门中，请稍等。。。')
+      const param = {
+        st_id: this.locationVal,
+        token: '',
+        type: typeTake
+      }
+      debugger
+      unlockReagent(param).then(response => {
+        this.list = response.data.items
+        this.listLoading = false
+        console.log('list: ' + this.list)
+
+        // 等待刷卡信息
+        this.dialogWaitVisible = true
+      }).then(response => {
+        this.dialogWaitVisible = false
+        this.$message.success('刷卡成功')
+      }).catch(err => {
+        this.dialogWaitVisible = false
+        this.$message.error('数据异常！')
+      })
+    },
+    removeReagent (id) {
+      if (this.list === null) {
+        return
+      }
+      this.list.some((item, i) => {
+        if (item.id === id) {
+          this.list.splice(i, 1)
+          // 在数组的some方法中，如果return true，就会立即终止这个数组的后续循环,所以相比较foreach，如果想要终止循环，那么建议使用some
+          return
+        }
+      })
+    },
+    showDetail (data) {
+      console.log(data)
+      this.dataDetail = data
+      this.cas = data.cas
+      this.name_cn = data.names[0].name_cn
+      this.name_en = data.names[0].name_en
+      this.formula = data.formula
+      this.dialogDetail = true
+      this.locations = data.location
+    },
     onSearch () {
       console.log('fetchData')
       this.fetchData()
@@ -103,10 +218,11 @@ export default {
       var param = {
         's': this.searchText,
         'loc_state': this.loc_state,
-        has_loc: true
+        has_loc: true,
+        has_all_state: false
       }
       fetchList(param).then(response => {
-        debugger
+
         this.list = response.data
         this.listLoading = false
         console.log('list: ' + this.list)
