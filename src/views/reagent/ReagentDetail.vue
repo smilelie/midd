@@ -51,7 +51,7 @@ const defaultForm = {
   name_cn: '农夫山泉', // 药品名称
   name_en: 'water hill', // 英文名称
   formula: 'H2O', // 分子式
-  ctrl_level: 0, // 管控级别
+  ctrl_level: '', // 管控级别
   id: undefined
 }
 

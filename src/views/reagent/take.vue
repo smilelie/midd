@@ -26,6 +26,21 @@
       </div>
     </el-dialog>
 
+    <el-dialog title :visible.sync="dialogAuthVisible">
+      <el-form>
+        <el-form-item label="用户名称" prop="authName">
+          <el-input v-model="authName" />
+        </el-form-item>
+        <el-form-item label="用户密码" prop="name">
+          <el-input v-model="authPass" show-password="true" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="authOk">确定</el-button>
+        <el-button type="primary" plain @click="authCancel">取消</el-button>
+      </div>
+    </el-dialog>
+
     <el-dialog title="提示" :visible.sync="dialogWaitVisible" width="30%">
       <span>等待刷卡中。。。</span>
     </el-dialog>
@@ -111,6 +126,7 @@
 
 <script>
 import { fetchList, unlockReagent } from '@/api/reagent'
+import { secondAuth } from '@/api/user'
 
 export default {
   filters: {
@@ -140,31 +156,65 @@ export default {
       loc_state: 1,
       dialogDetail: false,
       dialogWaitVisible: false,
+      dialogAuthVisible: false,
       dataDetail: null,
       cas: '',
       name_cn: '',
       name_en: '',
       formula: '',
       locations: null,
-      locationVal: ''
+      locationVal: '',
+      taken: '',
+      // 1-take, 2-return
+      takeType: 1,
+      authName: '',
+      authPass: ''
     }
   },
 
   methods: {
     takeReagent () {
       this.dialogDetail = false
-      this.unlock(1)
+      this.takeType = 1
+      // this.unlock(1)
+      this.showAuthDialog()
     },
     storeReagent () {
       this.dialogDetail = false
-      this.unlock(2)
+      this.takeType = 2
+      // this.unlock(2)
+      this.showAuthDialog()
     },
-    unlock (typeTake) {
+
+    authOk () {
+      this.dialogAuthVisible = false
+      const param = {
+        username: this.authName,
+        password: this.authPass
+      }
+      secondAuth(param).then(response => {
+        console.log('auth success.')
+        this.token = response.token
+
+        this.unlock()
+      }).catch(err => {
+        this.$message.error('用户认证失败.')
+      })
+    },
+    authCancel () {
+      this.dialogAuthVisible = false
+    },
+
+    showAuthDialog () {
+      this.dialogAuthVisible = true
+    },
+
+    unlock () {
       this.$message.info('开门中，请稍等。。。')
       const param = {
         st_id: this.locationVal,
         token: '',
-        type: typeTake
+        type: this.takeType
       }
       debugger
       unlockReagent(param).then(response => {
@@ -222,7 +272,6 @@ export default {
         has_all_state: false
       }
       fetchList(param).then(response => {
-
         this.list = response.data
         this.listLoading = false
         console.log('list: ' + this.list)

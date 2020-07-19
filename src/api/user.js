@@ -18,6 +18,9 @@ export function login (data) {
 //     params: { token }
 //   })
 // }
+export function secondAuth (data) {
+  return window.callSvc('login.login2', data)
+}
 
 export function logout () {
 
