@@ -158,7 +158,7 @@ $cursor: #fff;
 .login-container {
   .el-input {
     display: inline-block;
-    height: 47px;
+    height: 20px;
     width: 85%;
 
     input {
@@ -166,9 +166,9 @@ $cursor: #fff;
       border: 0px;
       -webkit-appearance: none;
       border-radius: 0px;
-      padding: 12px 5px 12px 15px;
+      padding: 4px 5px 4px 15px;
       color: $light_gray;
-      height: 47px;
+      height: 18px;
       caret-color: $cursor;
 
       &:-webkit-autofill {
@@ -183,6 +183,7 @@ $cursor: #fff;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
+    line-height: 30px;
   }
 }
 </style>
@@ -200,9 +201,9 @@ $light_gray: #eee;
 
   .login-form {
     position: relative;
-    width: 520px;
+    width: 50%;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 10% 5% 0;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -231,7 +232,7 @@ $light_gray: #eee;
     position: relative;
 
     .title {
-      font-size: 26px;
+      font-size: 20px;
       color: $light_gray;
       margin: 0px auto 40px auto;
       text-align: center;

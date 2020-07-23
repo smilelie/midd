@@ -3,17 +3,17 @@
     <div class="menu_buttons">
       <el-row type="flex" justify="center">
         <router-link to="/reagent/take">
-          <el-button type="primary">取出药品</el-button>
+          <el-button type="primary">取出试剂</el-button>
         </router-link>
       </el-row>
       <el-row type="flex" justify="center">
         <router-link to="/reagent/take">
-          <el-button type="primary">归还药品</el-button>
+          <el-button type="primary">归还试剂</el-button>
         </router-link>
       </el-row>
       <el-row type="flex" justify="center">
         <router-link to="/reagent/create">
-          <el-button type="primary" size="small">添加药品</el-button>
+          <el-button type="primary" size="small">试剂管理</el-button>
         </router-link>
       </el-row>
       <el-row type="flex" justify="center">
@@ -70,12 +70,12 @@ export default {
 }
 
 .menu_buttons {
-  margin: 15% auto;
+  margin: 10% auto;
 }
 
 .el-button {
-  font-size: 24px;
-  margin: 20px;
-  padding: 12px 80px;
+  font-size: 16px;
+  margin: 10px;
+  padding: 12px 60px;
 }
 </style>

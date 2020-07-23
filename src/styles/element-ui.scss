@@ -6,7 +6,7 @@
 }
 
 .el-upload {
-  input[type="file"] {
+  input[type='file'] {
     display: none !important;
   }
 }
@@ -14,7 +14,6 @@
 .el-upload__input {
   display: none;
 }
-
 
 // to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
@@ -39,11 +38,69 @@
 // dropdown
 .el-dropdown-menu {
   a {
-    display: block
+    display: block;
   }
 }
 
 // to fix el-date-picker css style
 .el-range-separator {
   box-sizing: content-box;
+}
+
+.el-button--mini {
+  font-size: 8px;
+}
+
+.el-button {
+  padding: 4px 10px;
+}
+
+.el-input__inner {
+  font-size: 10px;
+  height: 20px;
+}
+
+.el-form-item__content {
+  line-height: 15px;
+  font-size: 14px;
+}
+.el-form-item {
+  font-size: 12px;
+}
+
+.el-form-item__label {
+  line-height: 30px;
+  font-size: 12px;
+}
+
+.el-input__icon {
+  height: 100%;
+  width: 25px;
+  line-height: 20px;
+}
+
+.el-select-dropdown__item {
+  font-size: 10px;
+  padding: 0 10px;
+  height: 20px;
+  line-height: 20px;
+}
+
+.el-dialog__header {
+  padding: 10px 8px;
+}
+
+.el-dialog__body {
+  padding: 8px 16px;
+  color: #606266;
+  font-size: 8px;
+  word-break: break-all;
+}
+
+.el-form-item__label {
+  line-height: 30px;
+  font-size: 8px;
+}
+.el-dialog__header {
+  padding: 20px 20px 10px;
 }

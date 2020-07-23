@@ -23,6 +23,5 @@ export function secondAuth (data) {
 }
 
 export function logout () {
-
   return window.callSvc('login.logout')
 }

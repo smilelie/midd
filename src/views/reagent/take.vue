@@ -1,43 +1,43 @@
 <template>
   <div class="app-container">
-    <el-dialog title :visible.sync="dialogDetail">
-      <el-form :model="dataDetail">
-        <el-form-item label="cas编号" prop="cas">
+    <el-dialog title="试剂详细信息" :visible.sync="dialogDetail">
+      <el-form :model="dataDetail" label-position="left">
+        <el-form-item label="cas编号" label-width="60px" prop="cas">
           <el-input v-model="cas" />
         </el-form-item>
-        <el-form-item label="药品名称" prop="name">
+        <el-form-item label="药品名称" label-width="60px" prop="name">
           <el-input v-model="name_cn" />
         </el-form-item>
-        <el-form-item label="药品英文名称" prop="nameEn">
+        <el-form-item label="药品英文名称" label-width="60px" prop="nameEn">
           <el-input v-model="name_en" />
         </el-form-item>
-        <el-form-item label="化学分子式" prop="formula">
+        <el-form-item label="化学分子式" label-width="60px" prop="formula">
           <el-input v-model="formula" />
         </el-form-item>
-        <el-form-item label="位置信息" label-width="120px">
+        <el-form-item label="位置信息" label-width="60px">
           <el-select v-model="locationVal" placeholder="请选择位置">
-            <el-option v-for="item in locations" :key="item.id" :label="item.id" :value="item.id"></el-option>
+            <el-option v-for="item in locations" :key="item.id" :label="item.id" :value="item.id" />
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="takeReagent">取药</el-button>
-        <el-button type="primary" @click="storeReagent">归还</el-button>
+        <el-button type="primary" @click="takeReagent" size="mini">取药</el-button>
+        <el-button @click="cancel" size="mini">取消</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog title :visible.sync="dialogAuthVisible">
+    <el-dialog title="二次认证" :visible.sync="dialogAuthVisible">
       <el-form>
         <el-form-item label="用户名称" prop="authName">
           <el-input v-model="authName" />
         </el-form-item>
         <el-form-item label="用户密码" prop="name">
-          <el-input v-model="authPass" show-password="true" />
+          <el-input v-model="authPass" type="password" show-password="true" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="authOk">确定</el-button>
-        <el-button type="primary" plain @click="authCancel">取消</el-button>
+        <el-button type="primary" size="mini" @click="authOk">确定</el-button>
+        <el-button type="primary" size="mini" plain @click="authCancel">取消</el-button>
       </div>
     </el-dialog>
 
@@ -50,12 +50,12 @@
         <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch" />
       </el-col>
       <el-col :span="4">
-        <el-button type="primary" @click="onSearch">查找</el-button>
+        <el-button type="primary" size="mini" @click="onSearch">查找</el-button>
       </el-col>
 
       <el-col :span="4">
         <router-link :to="'/reagent/create/'">
-          <el-button type="success" @click="onCreate">添加新试剂</el-button>
+          <el-button type="success" size="mini" @click="onCreate">添加新试剂</el-button>
         </router-link>
       </el-col>
     </el-row>
@@ -63,15 +63,18 @@
     <el-table
       v-loading="listLoading"
       :data="list"
+      size="mini"
       element-loading-text="Loading"
       border
       fit
+      stripe
       highlight-current-row
+      :cell-style="{padding: '0'}"
     >
-      <el-table-column align="center" label="索引" width="80">
+      <!-- <el-table-column align="center" label="索引" width="40">
         <template slot-scope="scope">{{ scope.$index }}</template>
-      </el-table-column>
-      <el-table-column align="center" label="ID" width="120">
+      </el-table-column>-->
+      <el-table-column align="center" label="ID">
         <template slot-scope="scope">{{ scope.row.cas }}</template>
       </el-table-column>
       <el-table-column label="药品名称">
@@ -82,7 +85,7 @@
           <span>{{ scope.row.names | enNameFilter }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="化学分子式" width="110" align="center">
+      <el-table-column label="化学分子式" align="center">
         <template slot-scope="scope">{{ scope.row.formula }}</template>
       </el-table-column>
       <!-- <el-table-column label="规格">
@@ -100,22 +103,16 @@
           <el-tag :type="scope.row.level | levelFilter">{{ scope.row.level }}</el-tag>
         </template>
       </el-table-column>-->
-      <el-table-column class-name="option-button" label="试剂操作" width="240" align="center">
+      <el-table-column class-name="option-button" label="操作" width="160" align="center">
         <template slot-scope="scope">
-          <el-button
-            type="primary"
-            size="mini"
-            icon="el-icon-edit"
-            plain
-            @click="showDetail(scope.row)"
-          >查看</el-button>
-          <el-button
+          <el-button type="primary" size="mini" plain @click="showDetail(scope.row)">详细信息</el-button>
+          <!-- <el-button
             type="primary"
             size="mini"
             icon="el-icon-delete"
             plain
             @click="removeReagent(scope.row.cas)"
-          >删除</el-button>
+          >删除</el-button>-->
         </template>
 
         <!-- <el-button type="primary" size="mini" icon="el-icon-delete" @click="removeReagent">删除</el-button> -->
@@ -179,11 +176,10 @@ export default {
       // this.unlock(1)
       this.showAuthDialog()
     },
-    storeReagent () {
+    cancel () {
       this.dialogDetail = false
-      this.takeType = 2
-      // this.unlock(2)
-      this.showAuthDialog()
+      // this.takeType = 2
+      // this.showAuthDialog()
     },
 
     authOk () {
@@ -281,3 +277,18 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+.el-table {
+  font-size: 9px;
+}
+
+.el-table--mini td,
+.el-table--mini th {
+  padding: 0;
+}
+
+.el-form-item {
+  font-size: 8px;
+  margin-bottom: 2px;
+}
+</style>

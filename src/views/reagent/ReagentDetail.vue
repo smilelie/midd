@@ -37,8 +37,8 @@
         </el-select>
       </el-form-item>
       <el-form-item class="postInfo-container-item">
-        <el-button type="primary" @click="submitForm">立即创建</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button type="primary" size="mini" @click="submitForm">添加</el-button>
+        <el-button size="mini" plain @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -184,7 +184,7 @@ export default {
 .createPost-container {
   position: relative;
 
-  padding: 40px 45px 20px 50px;
+  padding: 10px 15px 10px 15px;
 
   @include clearfix;
   margin-bottom: 10px;
@@ -194,3 +194,5 @@ export default {
   }
 }
 </style>
+
+

@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="16">
-        <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch"></el-input>
+        <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch" />
       </el-col>
       <el-col :span="4">
         <el-button type="primary" @click="onSearch">查找</el-button>
@@ -14,7 +14,7 @@
         </router-link>
       </el-col>
     </el-row>
-    <br />
+    <br>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -44,7 +44,7 @@
         <template slot-scope="scope">{{ scope.row.weight }}</template>
       </el-table-column>
       <el-table-column class-name="status-col" label="物理状态" width="90" align="center">
-        <template slot-scope="scope">{{ scope.row.status}}</template>
+        <template slot-scope="scope">{{ scope.row.status }}</template>
       </el-table-column>
       <!-- 危险、易燃易爆、普通 -->
       <el-table-column class-name="status-col" label="管控级别" align="center">
