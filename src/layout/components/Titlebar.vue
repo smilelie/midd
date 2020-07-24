@@ -4,7 +4,7 @@
 
     <span class="titleName">{{ title }}</span>
     <span class="menu_buttons">
-      <el-button type="primary" size="mini" @click.native="logout">返回</el-button>
+      <el-button type="primary" @click.native="logout">返回</el-button>
     </span>
   </div>
 </template>
@@ -36,23 +36,23 @@ export default {
 
 <style lang="scss" scoped>
 .titlebar {
-  height: 30px;
+  height: 80px;
   overflow: hidden;
   position: relative;
   background: #889aa4;
   box-shadow: 0 1px 2px rgba(0, 21, 41, 0.08);
-  padding: 4px 2px;
+  padding: 20px 20px;
   text-align: center;
 
   .userName {
-    font-size: 8px;
+    font-size: 16px;
     float: left;
     margin: 6px;
   }
 
   .titleName {
     margin: 20% 10%;
-    font-size: 14px;
+    font-size: 26px;
     letter-spacing: 2px;
   }
   .menu_buttons {

@@ -1,32 +1,32 @@
 <template>
   <div class="app-container">
-    <el-dialog title="试剂详细信息" :visible.sync="dialogDetail">
+    <el-dialog title="试剂详细信息" :visible.sync="dialogDetail" disabled="true">
       <el-form :model="dataDetail" label-position="left">
-        <el-form-item label="cas编号" label-width="60px" prop="cas">
-          <el-input v-model="cas" />
+        <el-form-item label="cas编号" label-width="120px" prop="cas">
+          <el-input v-model="cas" :disabled="true" />
         </el-form-item>
-        <el-form-item label="药品名称" label-width="60px" prop="name">
-          <el-input v-model="name_cn" />
+        <el-form-item label="药品名称" label-width="120px" prop="name">
+          <el-input v-model="name_cn" :disabled="true" />
         </el-form-item>
-        <el-form-item label="药品英文名称" label-width="60px" prop="nameEn">
-          <el-input v-model="name_en" />
+        <el-form-item label="药品英文名称" label-width="120px" prop="nameEn">
+          <el-input v-model="name_en" :disabled="true" />
         </el-form-item>
-        <el-form-item label="化学分子式" label-width="60px" prop="formula">
-          <el-input v-model="formula" />
+        <el-form-item label="化学分子式" label-width="120px" prop="formula">
+          <el-input v-model="formula" :disabled="true" />
         </el-form-item>
-        <el-form-item label="位置信息" label-width="60px">
+        <el-form-item label="位置信息" label-width="120px">
           <el-select v-model="locationVal" placeholder="请选择位置">
             <el-option v-for="item in locations" :key="item.id" :label="item.id" :value="item.id" />
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="takeReagent" size="mini">取药</el-button>
-        <el-button @click="cancel" size="mini">取消</el-button>
+        <el-button type="primary" @click="takeReagent">取药</el-button>
+        <el-button @click="cancel">取消</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog title="二次认证" :visible.sync="dialogAuthVisible">
+    <el-dialog class="auth-dialog" title="二次认证" :visible.sync="dialogAuthVisible">
       <el-form>
         <el-form-item label="用户名称" prop="authName">
           <el-input v-model="authName" />
@@ -36,8 +36,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" size="mini" @click="authOk">确定</el-button>
-        <el-button type="primary" size="mini" plain @click="authCancel">取消</el-button>
+        <el-button type="primary" @click="authOk">确定</el-button>
+        <el-button type="primary" plain @click="authCancel">取消</el-button>
       </div>
     </el-dialog>
 
@@ -50,26 +50,18 @@
         <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch" />
       </el-col>
       <el-col :span="4">
-        <el-button type="primary" size="mini" @click="onSearch">查找</el-button>
-      </el-col>
-
-      <el-col :span="4">
-        <router-link :to="'/reagent/create/'">
-          <el-button type="success" size="mini" @click="onCreate">添加新试剂</el-button>
-        </router-link>
+        <el-button type="primary" @click="onSearch">查找</el-button>
       </el-col>
     </el-row>
     <br />
     <el-table
       v-loading="listLoading"
       :data="list"
-      size="mini"
       element-loading-text="Loading"
       border
       fit
       stripe
       highlight-current-row
-      :cell-style="{padding: '0'}"
     >
       <!-- <el-table-column align="center" label="索引" width="40">
         <template slot-scope="scope">{{ scope.$index }}</template>
@@ -278,17 +270,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-table {
-  font-size: 9px;
-}
-
-.el-table--mini td,
-.el-table--mini th {
-  padding: 0;
-}
-
-.el-form-item {
-  font-size: 8px;
-  margin-bottom: 2px;
-}
+// .el-form-item {
+//   font-size: 8px;
+//   margin-bottom: 2px;
+// }
 </style>
