@@ -156,8 +156,8 @@ export default {
       taken: '',
       // 1-take, 2-return
       takeType: 1,
-      authName: '',
-      authPass: ''
+      authName: 'authuser',
+      authPass: '123456'
     }
   },
 
@@ -182,9 +182,10 @@ export default {
       }
       secondAuth(param).then(response => {
         console.log('auth success.')
-        this.token = response.token
+        // debugger
+        // this.token = response.token
 
-        this.unlock()
+        this.unlock(response.token)
       }).catch(err => {
         this.$message.error('用户认证失败.')
       })
@@ -197,14 +198,14 @@ export default {
       this.dialogAuthVisible = true
     },
 
-    unlock () {
+    unlock (tokenVal) {
+      console.log("unlock")
       this.$message.info('开门中，请稍等。。。')
       const param = {
         st_id: this.locationVal,
-        token: '',
+        token: tokenVal,
         type: this.takeType
       }
-      debugger
       unlockReagent(param).then(response => {
         this.list = response.data.items
         this.listLoading = false
@@ -217,7 +218,12 @@ export default {
         this.$message.success('刷卡成功')
       }).catch(err => {
         this.dialogWaitVisible = false
-        this.$message.error('数据异常！')
+        debugger
+        console.log(err)
+        this.$message.error(err)
+      }).catch(err => {
+        debugger
+        console.log(err)
       })
     },
     removeReagent (id) {

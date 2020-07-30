@@ -4,7 +4,7 @@
 
     <span class="titleName">{{ title }}</span>
     <span class="menu_buttons">
-      <el-button type="primary" @click.native="logout">返回</el-button>
+      <el-button type="primary" @click.native="toHome">返回主菜单</el-button>
     </span>
   </div>
 </template>
@@ -24,12 +24,14 @@ export default {
     }
   },
   methods: {
-    async logout () {
-      console.log('logout')
-      await this.$store.dispatch('user/logout')
-      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)sr
+    toHome () {
       this.$router.push('/homepage')
     }
+    // async logout () {
+    //   console.log('logout')
+    //   await this.$store.dispatch('user/logout')
+    //   this.$router.push('/homepage')
+    // }
   }
 }
 </script>
@@ -39,8 +41,8 @@ export default {
   height: 80px;
   overflow: hidden;
   position: relative;
-  background: #889aa4;
-  box-shadow: 0 1px 2px rgba(0, 21, 41, 0.08);
+  background: #8894;
+  box-shadow: 0 1px 2px rgba(43, 206, 105, 0.08);
   padding: 20px 20px;
   text-align: center;
 

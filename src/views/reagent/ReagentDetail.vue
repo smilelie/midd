@@ -38,7 +38,7 @@
       </el-form-item>
       <el-form-item class="postInfo-container-item">
         <el-button type="primary" size="mini" @click="submitForm">添加</el-button>
-        <el-button size="mini" plain @click="resetForm('ruleForm')">重置</el-button>
+        <el-button size="mini" plain @click="resetForm('postForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
