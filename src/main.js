@@ -15,34 +15,11 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-import './config'
+import CONF from './config.json';
+import { initApiSvc, invalidSvc } from './lib/apiSvc';
 
-window.callSvc = function (apiInfo, param) {
-  return new Promise((resolve, reject) => {
-    var err = window.apiSvc.svc(apiInfo, param || {}, function (ok, rslt, ext) {
-      if (ok) {
-        if (rslt == null) {
-          rslt = { _ext: ext }
-        } else {
-          rslt['_ext'] = ext
-        }
-        resolve(rslt)
-      } else {
-        if (ext && ext.refresh) {
-          // 刷新页面
-          window.location.reload()
-          return
-        }
-        reject(ext || {})
-      }
-    })
-    if (err) {
-      reject({
-        clientErr: err
-      })
-    }
-  })
-}
+//Vue.prototype.$callSvc = initApiSvc(CONF).svc || invalidSvc('svc');
+window.callSvc = initApiSvc(CONF).svc || invalidSvc('svc');
 
 /**
  * If you don't want to use mock-server
