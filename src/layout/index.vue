@@ -1,10 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <!-- <sidebar class="sidebar-container" /> -->
-
     <div class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
+      <div :class="{ 'fixed-header': fixedHeader }">
         <titlebar />
       </div>
       <app-main />
@@ -22,42 +19,32 @@ export default {
   components: {
     Titlebar,
     AppMain
-
   },
   mixins: [ResizeMixin],
   computed: {
     ...mapState({
-      device: state => state.app.device
+      device: (state) => state.app.device
     }),
-    sidebar () {
-      return this.$store.state.app.sidebar
-    },
-    device () {
+    device() {
       return this.$store.state.app.device
     },
-    fixedHeader () {
+    fixedHeader() {
       return this.$store.state.settings.fixedHeader
     },
-    classObj () {
+    classObj() {
       return {
-        hideSidebar: !this.sidebar.opened,
-        openSidebar: this.sidebar.opened,
-        withoutAnimation: this.sidebar.withoutAnimation,
+        hideSidebar: true,
         mobile: this.device === 'mobile'
       }
     }
   },
-  methods: {
-    handleClickOutside () {
-      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
-    }
-  }
+  methods: {}
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
-@import "~@/styles/variables.scss";
+@import '~@/styles/mixin.scss';
+@import '~@/styles/variables.scss';
 
 .app-wrapper {
   @include clearfix;
