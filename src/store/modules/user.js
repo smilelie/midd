@@ -33,43 +33,47 @@ const mutations = {
 
 const actions = {
   // user login
-  login ({ commit }, userInfo) {
+  login({ commit }, userInfo) {
     console.log('store/modules/user/ -> login')
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const data = response
-        // TODO 是否登陆成功
-        console.log('login responsed: ' + data)
-        commit('SET_TOKEN', 'data.token')
-        commit('SET_NAME', data.name)
-        commit('SET_IS_ADMIN', data.isAdmin)
-        commit('SET_USER_ID', data.userId)
-        setToken('data.token')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      login({ username: username.trim(), password: password })
+        .then((response) => {
+          const data = response[0]
+          // TODO 是否登陆成功
+          console.log('login responsed: ' + data)
+          commit('SET_TOKEN', 'data.token')
+          commit('SET_NAME', data.name)
+          commit('SET_IS_ADMIN', data.isAdmin)
+          commit('SET_USER_ID', data.userId)
+          setToken('data.token')
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
 
   // user logout
-  logout ({ commit, state }) {
+  logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      logout(state.token)
+        .then(() => {
+          removeToken() // must remove  token  first
+          resetRouter()
+          commit('RESET_STATE')
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
 
   // remove token
-  resetToken ({ commit }) {
-    return new Promise(resolve => {
+  resetToken({ commit }) {
+    return new Promise((resolve) => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
       resolve()
@@ -83,4 +87,3 @@ export default {
   mutations,
   actions
 }
-

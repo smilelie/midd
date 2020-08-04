@@ -27,16 +27,21 @@ import HomePage from '@/views/homepage'
  */
 
 /**
+ * 重写路由的push方法
+ * 解决，相同路由跳转时，报错
+ * 添加，相同路由跳转时，触发watch (针对el-menu，仅限string方式传参，形如"view?id=5")
+ */
+const routerPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch((error) => error)
+}
+
+/**
  * constantRoutes
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
 export const constantRoutes = [
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
   {
     path: '/',
     redirect: '/homepage',
@@ -46,6 +51,11 @@ export const constantRoutes = [
     path: '/homepage',
     component: HomePage,
     meta: { title: '主页', icon: 'dashboard' }
+  },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
   },
   {
     path: '/404',
@@ -110,16 +120,17 @@ export const constantRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
+  })
 
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter () {
+export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }

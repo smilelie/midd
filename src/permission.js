@@ -1,16 +1,14 @@
 import router from './router'
 import store from './store'
-import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login', '/homepage'] // no redirect whitelist
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
 
@@ -18,8 +16,9 @@ router.beforeEach(async (to, from, next) => {
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
-  const hasToken = getToken()
-  const hasLogin = (store.getters.name != null && store.getters.name != '')
+  const hasLogin = store.getters.name != null && store.getters.name !== ''
+
+  console.log('---------------- name: ' + store.getters.name)
 
   if (hasLogin) {
     if (to.path === '/login') {
@@ -27,6 +26,7 @@ router.beforeEach(async (to, from, next) => {
       next({ path: '/' })
       NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
     } else {
+      console.log('has login==========> ' + to.path)
       next()
     }
   } else {
@@ -34,6 +34,7 @@ router.beforeEach(async (to, from, next) => {
 
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
+      console.log('in whitelist==========> ' + to.path)
       next()
     } else {
       // other pages that do not have permission to access are redirected to the login page.
