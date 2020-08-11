@@ -1,6 +1,10 @@
 <template>
   <div class="app-container">
-    <el-dialog title="试剂详细信息" :visible.sync="dialogDetail" disabled="true">
+    <el-dialog
+      title="试剂详细信息"
+      :visible.sync="dialogDetail"
+      disabled="true"
+    >
       <el-form :model="dataDetail" label-position="left">
         <el-form-item label="cas编号" label-width="120px" prop="cas">
           <el-input v-model="cas" :disabled="true" />
@@ -16,7 +20,12 @@
         </el-form-item>
         <el-form-item label="位置信息" label-width="120px">
           <el-select v-model="locationVal" placeholder="请选择位置">
-            <el-option v-for="item in locations" :key="item.id" :label="item.id" :value="item.id" />
+            <el-option
+              v-for="item in locations"
+              :key="item.id"
+              :label="item.id"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -26,7 +35,11 @@
       </div>
     </el-dialog>
 
-    <el-dialog class="auth-dialog" title="二次认证" :visible.sync="dialogAuthVisible">
+    <el-dialog
+      class="auth-dialog"
+      title="二次认证"
+      :visible.sync="dialogAuthVisible"
+    >
       <el-form>
         <el-form-item label="用户名称" prop="authName">
           <el-input v-model="authName" />
@@ -47,30 +60,37 @@
 
     <el-row :gutter="20">
       <el-col :span="16">
-        <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch" />
+        <el-input
+          v-model="searchText"
+          placeholder="请输入查找的药品"
+          @keyup.enter.native="onSearch"
+        />
       </el-col>
       <el-col :span="4">
         <el-button type="primary" @click="onSearch">查找</el-button>
       </el-col>
     </el-row>
-    <br />
+    <br>
     <el-table
       v-loading="listLoading"
-      :data="list"
+      :data="
+        list == null
+          ? null
+          : list.slice((currentpage - 1) * pagesize, currentpage * pagesize)
+      "
       element-loading-text="Loading"
       border
       fit
       stripe
       highlight-current-row
     >
-      <!-- <el-table-column align="center" label="索引" width="40">
-        <template slot-scope="scope">{{ scope.$index }}</template>
-      </el-table-column>-->
       <el-table-column align="center" label="ID">
         <template slot-scope="scope">{{ scope.row.cas }}</template>
       </el-table-column>
       <el-table-column label="药品名称">
-        <template slot-scope="scope">{{ scope.row.names | nameFilter }}</template>
+        <template slot-scope="scope">{{
+          scope.row.names | nameFilter
+        }}</template>
       </el-table-column>
       <el-table-column label="英文名称" align="center">
         <template slot-scope="scope">
@@ -80,36 +100,35 @@
       <el-table-column label="化学分子式" align="center">
         <template slot-scope="scope">{{ scope.row.formula }}</template>
       </el-table-column>
-      <!-- <el-table-column label="规格">
-        <template slot-scope="scope">{{ scope.row.stardard }}</template>
-      </el-table-column>
-      <el-table-column label="重量/容量">
-        <template slot-scope="scope">{{ scope.row.weight }}</template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="物理状态" width="90" align="center">
-        <template slot-scope="scope">{{ scope.row.status }}</template>
-      </el-table-column>-->
-      <!-- 危险、易燃易爆、普通 -->
-      <!-- <el-table-column class-name="status-col" label="管控级别" align="center">
+      <el-table-column
+        class-name="option-button"
+        label="操作"
+        width="160"
+        align="center"
+      >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.level | levelFilter">{{ scope.row.level }}</el-tag>
-        </template>
-      </el-table-column>-->
-      <el-table-column class-name="option-button" label="操作" width="160" align="center">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" plain @click="showDetail(scope.row)">详细信息</el-button>
-          <!-- <el-button
+          <el-button
             type="primary"
             size="mini"
-            icon="el-icon-delete"
             plain
-            @click="removeReagent(scope.row.cas)"
-          >删除</el-button>-->
+            @click="showDetail(scope.row)"
+          >详细信息</el-button>
         </template>
 
         <!-- <el-button type="primary" size="mini" icon="el-icon-delete" @click="removeReagent">删除</el-button> -->
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      v-show="list != null"
+      background
+      layout="prev, pager, next, total, jumper"
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="pagesize"
+      :total="list == null ? 0 : list.length"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
+    />
   </div>
 </template>
 
@@ -119,7 +138,7 @@ import { secondAuth } from '@/api/user'
 
 export default {
   filters: {
-    levelFilter (level) {
+    levelFilter(level) {
       const statusMap = {
         易燃易爆: 'success',
         普通: 'gray',
@@ -127,20 +146,22 @@ export default {
       }
       return statusMap[level]
     },
-    nameFilter (names) {
+    nameFilter(names) {
       const nameList = names.map((name) => name.name_cn)
       return nameList.join()
     },
-    enNameFilter (names) {
+    enNameFilter(names) {
       const nameList = names.map((name) => name.name_en)
       return nameList.join()
     }
   },
-  data () {
+  data() {
     return {
       list: null,
       listLoading: false,
       searchText: '',
+      currentpage: 1,
+      pagesize: 10,
       // 取药默认查询在库数据
       loc_state: 1,
       dialogDetail: false,
@@ -156,77 +177,84 @@ export default {
       taken: '',
       // 1-take, 2-return
       takeType: 1,
+      // TODO 此处需要修改
       authName: 'authuser',
       authPass: '123456'
     }
   },
 
   methods: {
-    takeReagent () {
+    takeReagent() {
       this.dialogDetail = false
       this.takeType = 1
       // this.unlock(1)
       this.showAuthDialog()
     },
-    cancel () {
+    cancel() {
       this.dialogDetail = false
       // this.takeType = 2
       // this.showAuthDialog()
     },
 
-    authOk () {
+    authOk() {
       this.dialogAuthVisible = false
       const param = {
         username: this.authName,
         password: this.authPass
       }
-      secondAuth(param).then(response => {
-        console.log('auth success.')
-        // debugger
-        // this.token = response.token
+      secondAuth(param)
+        .then((response) => {
+          console.log('auth success.')
+          // debugger
+          // this.token = response.token
 
-        this.unlock(response.token)
-      }).catch(err => {
-        this.$message.error('用户认证失败.')
-      })
+          this.unlock(response[0].token)
+        }) // eslint-disable-next-line handle-callback-err
+        .catch((err) => {
+          this.$message.error('用户认证失败.')
+        })
     },
-    authCancel () {
+    authCancel() {
       this.dialogAuthVisible = false
     },
 
-    showAuthDialog () {
+    showAuthDialog() {
       this.dialogAuthVisible = true
     },
 
-    unlock (tokenVal) {
-      console.log("unlock")
+    unlock(tokenVal) {
+      console.log('unlock')
       this.$message.info('开门中，请稍等。。。')
       const param = {
         st_id: this.locationVal,
         token: tokenVal,
         type: this.takeType
       }
-      unlockReagent(param).then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-        console.log('list: ' + this.list)
+      unlockReagent(param)
+        .then((response) => {
+          this.list = response.data.items
+          this.listLoading = false
+          console.log('list: ' + this.list)
 
-        // 等待刷卡信息
-        this.dialogWaitVisible = true
-      }).then(response => {
-        this.dialogWaitVisible = false
-        this.$message.success('刷卡成功')
-      }).catch(err => {
-        this.dialogWaitVisible = false
-        debugger
-        console.log(err)
-        this.$message.error(err)
-      }).catch(err => {
-        debugger
-        console.log(err)
-      })
+          // 等待刷卡信息
+          this.dialogWaitVisible = true
+        })
+        .then((response) => {
+          this.dialogWaitVisible = false
+          this.$message.success('刷卡成功')
+        })
+        .catch((err) => {
+          this.dialogWaitVisible = false
+          debugger
+          console.log(err)
+          this.$message.error(err)
+        })
+        .catch((err) => {
+          debugger
+          console.log(err)
+        })
     },
-    removeReagent (id) {
+    removeReagent(id) {
       if (this.list === null) {
         return
       }
@@ -238,7 +266,13 @@ export default {
         }
       })
     },
-    showDetail (data) {
+    handleCurrentChange(curpage) {
+      this.currentpage = curpage
+    },
+    handleSizeChange(psize) {
+      this.pagesize = psize
+    },
+    showDetail(data) {
       console.log(data)
       this.dataDetail = data
       this.cas = data.cas
@@ -248,36 +282,41 @@ export default {
       this.dialogDetail = true
       this.locations = data.location
     },
-    onSearch () {
+    onSearch() {
       console.log('fetchData')
       this.fetchData()
     },
-    onCreate () {
+    onCreate() {
       console.log('create reagent.')
       // this.createReagent()
       // this.$router.push('/reagent/create')
     },
-    fetchData () {
+    fetchData() {
       this.listLoading = true
       var param = {
-        's': this.searchText,
-        'loc_state': this.loc_state,
+        s: this.searchText,
+        loc_state: this.loc_state,
         has_loc: true,
         has_all_state: false
       }
-      fetchList(param).then(response => {
-        this.list = response.data
-        this.listLoading = false
-        console.log('list: ' + this.list)
-      })
+      fetchList(param)
+        .then((response) => {
+          debugger
+          this.list = response[0].data
+          this.listLoading = false
+          console.log('list: ' + this.list)
+        })
+        .catch((err) => {
+          console.log(err)
+          // TODO unlock
+        })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-// .el-form-item {
-//   font-size: 8px;
-//   margin-bottom: 2px;
-// }
+.el-pagination {
+  margin-top: 8px;
+}
 </style>
