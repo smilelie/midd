@@ -10,14 +10,52 @@
     />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title><%= webpackConfig.name %></title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
   </head>
   <body>
-    <noscript>
-      <strong
-        >We're sorry but <%= webpackConfig.name %> doesn't work properly without
-        JavaScript enabled. Please enable it to continue.</strong
-      >
-    </noscript>
+    <img src="./save.jpg" alt="pic" id="imgSaver" />
+    <style>
+      #imgSaver {
+        width: 100vw;
+        height: 100vh;
+        display: none;
+      }
+    </style>
+    <script>
+      //定义并初始化时间和计时器
+      let timer = null,
+        time = 0
+
+      //设置事件，绑定到window，只要触碰到屏幕就重置计时器时间
+      //因为我是用的手机，touchstart方法只要碰到屏幕就会触发，电脑可以绑定其他事件
+      window.addEventListener('click', () => {
+        time = 0
+      })
+
+      //设置屏保图片的点击事件，点击后使其隐藏，显示内容
+      $('#imgSaver').click(function () {
+        $('#imgSaver').css('display', 'none')
+        //点击后继续执行计时器方法
+        setTimer()
+      })
+
+      //设置计时器方法，通过递归方法，以时间为判断点，达到时间后不再执行
+      function setTimer () {
+        timer = setTimeout(() => {
+          if (time < 3) {
+            time++
+            console.log(time)
+            setTimer()
+          } else {
+            $('#imgSaver').css('display', 'block')
+            time = 0
+          }
+        }, 1000)
+      }
+
+      //初始化调用执行计时器方法
+      setTimer()
+    </script>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

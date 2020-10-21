@@ -12,7 +12,7 @@
         </router-link>
       </el-row>
       <el-row type="flex" justify="center">
-        <router-link to="/reagent/create">
+        <router-link to="/reagent/manager">
           <el-button type="primary" size="small">试剂管理</el-button>
         </router-link>
       </el-row>
