@@ -7,7 +7,7 @@
         </router-link>
       </el-row>
       <el-row type="flex" justify="center">
-        <router-link to="/reagent/take">
+        <router-link to="/reagent/store">
           <el-button type="primary">归还试剂</el-button>
         </router-link>
       </el-row>
@@ -17,7 +17,9 @@
         </router-link>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-button type="primary" size="mini" @click="logout">重新登录</el-button>
+        <el-button type="primary" size="mini" @click="logout"
+          >重新登录</el-button
+        >
       </el-row>
     </div>
   </div>
@@ -70,12 +72,12 @@ export default {
 }
 
 .menu_buttons {
-  margin: 10% auto;
+  margin: 30% auto;
 }
 
 .el-button {
   font-size: 16px;
-  margin: 10px;
+  margin: 20px;
   padding: 12px 60px;
 }
 </style>

@@ -42,7 +42,7 @@
       //设置计时器方法，通过递归方法，以时间为判断点，达到时间后不再执行
       function setTimer () {
         timer = setTimeout(() => {
-          if (time < 3) {
+          if (time < 15) {
             time++
             console.log(time)
             setTimer()
@@ -50,7 +50,7 @@
             $('#imgSaver').css('display', 'block')
             time = 0
           }
-        }, 1000)
+        }, 60000)
       }
 
       //初始化调用执行计时器方法

@@ -1,6 +1,10 @@
 <template>
   <div class="app-container">
-    <el-dialog title="试剂详细信息" :visible.sync="dialogDetail" disabled="true">
+    <el-dialog
+      title="试剂详细信息"
+      :visible.sync="dialogDetail"
+      disabled="true"
+    >
       <el-form :model="dataDetail" label-position="left">
         <el-form-item label="cas编号" label-width="120px" prop="cas">
           <el-input v-model="cas" :disabled="true" />
@@ -16,7 +20,12 @@
         </el-form-item>
         <el-form-item label="位置信息" label-width="120px">
           <el-select v-model="locationVal" placeholder="请选择位置">
-            <el-option v-for="item in locations" :key="item.id" :label="item.id" :value="item.id" />
+            <el-option
+              v-for="item in locations"
+              :key="item.id"
+              :label="item.id"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -26,7 +35,11 @@
       </div>
     </el-dialog>
 
-    <el-dialog class="auth-dialog" title="二次认证" :visible.sync="dialogAuthVisible">
+    <el-dialog
+      class="auth-dialog"
+      title="二次认证"
+      :visible.sync="dialogAuthVisible"
+    >
       <el-form>
         <el-form-item label="用户名称" prop="authName">
           <el-input v-model="authName" />
@@ -47,7 +60,11 @@
 
     <el-row :gutter="20">
       <el-col :span="16">
-        <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch" />
+        <el-input
+          v-model="searchText"
+          placeholder="请输入查找的药品"
+          @keyup.enter.native="onSearch"
+        />
       </el-col>
       <el-col :span="4">
         <el-button type="primary" @click="onSearch">查找</el-button>
@@ -70,7 +87,9 @@
         <template slot-scope="scope">{{ scope.row.cas }}</template>
       </el-table-column>
       <el-table-column label="药品名称">
-        <template slot-scope="scope">{{ scope.row.names | nameFilter }}</template>
+        <template slot-scope="scope">{{
+          scope.row.names | nameFilter
+        }}</template>
       </el-table-column>
       <el-table-column label="英文名称" align="center">
         <template slot-scope="scope">
@@ -95,9 +114,20 @@
           <el-tag :type="scope.row.level | levelFilter">{{ scope.row.level }}</el-tag>
         </template>
       </el-table-column>-->
-      <el-table-column class-name="option-button" label="操作" width="160" align="center">
+      <el-table-column
+        class-name="option-button"
+        label="操作"
+        width="160"
+        align="center"
+      >
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" plain @click="showDetail(scope.row)">详细信息</el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            plain
+            @click="showDetail(scope.row)"
+            >详细信息</el-button
+          >
           <!-- <el-button
             type="primary"
             size="mini"
@@ -263,7 +293,9 @@ export default {
         has_all_state: false
       }
       fetchList(param).then(response => {
-        this.list = response.data
+        debugger
+        console.log('response: ' + response)
+        this.list = response[0].data
         this.listLoading = false
         console.log('list: ' + this.list)
       })

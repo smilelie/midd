@@ -26,7 +26,7 @@ module.exports = {
    */
   publicPath: './',
   outputDir: 'dist',
-  assetsDir: 'static',
+  assetsDir: './static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
@@ -40,6 +40,7 @@ module.exports = {
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
+    devtool: 'source-map',
     name: name,
     resolve: {
       alias: {

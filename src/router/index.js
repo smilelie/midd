@@ -32,7 +32,7 @@ import HomePage from '@/views/homepage'
  * 添加，相同路由跳转时，触发watch (针对el-menu，仅限string方式传参，形如"view?id=5")
  */
 const routerPush = Router.prototype.push
-Router.prototype.push = function push(location) {
+Router.prototype.push = function push (location) {
   return routerPush.call(this, location).catch((error) => error)
 }
 
@@ -101,6 +101,13 @@ export const constantRoutes = [
         component: () => import('@/views/reagent/store'),
         meta: { title: '试剂归还', noCache: true, icon: 'edit' },
         hidden: true
+      },
+      {
+        path: 'manager',
+        name: 'ReagentManager',
+        component: () => import('@/views/reagent/manager'),
+        // meta: { title: '试剂归还', noCache: true, icon: 'edit' },
+        hidden: true
       }
     ]
   },
@@ -122,7 +129,7 @@ export const constantRoutes = [
 
 const createRouter = () =>
   new Router({
-    // mode: 'history', // require service support
+    mode: 'hash', // require service support
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRoutes
   })
@@ -130,7 +137,7 @@ const createRouter = () =>
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
+export function resetRouter () {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }

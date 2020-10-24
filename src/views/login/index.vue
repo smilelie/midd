@@ -52,9 +52,10 @@
       <el-button
         :loading="loading"
         type="primary"
-        style="width:100%;margin-bottom:30px;"
+        style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-      >确定</el-button>
+        >确定</el-button
+      >
 
       <!-- <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
@@ -70,7 +71,7 @@ import '@/config'
 
 export default {
   name: 'Login',
-  data() {
+  data () {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
         callback(new Error('Please enter the correct user name'))
@@ -88,7 +89,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: 'admin1234'
+        password: 'admin1'
       },
       loginRules: {
         username: [
@@ -105,14 +106,14 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
   },
   methods: {
-    showPwd() {
+    showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -122,7 +123,7 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    handleLogin () {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true

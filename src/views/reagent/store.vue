@@ -16,7 +16,12 @@
         </el-form-item>
         <el-form-item label="位置信息" label-width="120px">
           <el-select v-model="locationVal" placeholder="请选择位置">
-            <el-option v-for="item in locations" :key="item.id" :label="item.id" :value="item.id" />
+            <el-option
+              v-for="item in locations"
+              :key="item.id"
+              :label="item.id"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -47,19 +52,17 @@
 
     <el-row :gutter="20">
       <el-col :span="16">
-        <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch" />
+        <el-input
+          v-model="searchText"
+          placeholder="请输入查找的药品"
+          @keyup.enter.native="onSearch"
+        />
       </el-col>
       <el-col :span="4">
         <el-button type="primary" @click="onSearch">查找</el-button>
       </el-col>
-
-      <el-col :span="4">
-        <router-link :to="'/reagent/create/'">
-          <el-button type="success" @click="onCreate">添加新试剂</el-button>
-        </router-link>
-      </el-col>
     </el-row>
-    <br>
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -75,7 +78,9 @@
         <template slot-scope="scope">{{ scope.row.cas }}</template>
       </el-table-column>
       <el-table-column label="药品名称">
-        <template slot-scope="scope">{{ scope.row.names | nameFilter }}</template>
+        <template slot-scope="scope">{{
+          scope.row.names | nameFilter
+        }}</template>
       </el-table-column>
       <el-table-column label="英文名称" align="center">
         <template slot-scope="scope">
@@ -100,7 +105,12 @@
           <el-tag :type="scope.row.level | levelFilter">{{ scope.row.level }}</el-tag>
         </template>
       </el-table-column>-->
-      <el-table-column class-name="option-button" label="试剂操作" width="240" align="center">
+      <el-table-column
+        class-name="option-button"
+        label="试剂操作"
+        width="240"
+        align="center"
+      >
         <template slot-scope="scope">
           <el-button
             type="primary"
@@ -108,14 +118,16 @@
             icon="el-icon-edit"
             plain
             @click="showDetail(scope.row)"
-          >查看</el-button>
+            >查看</el-button
+          >
           <el-button
             type="primary"
             size="mini"
             icon="el-icon-delete"
             plain
             @click="removeReagent(scope.row.cas)"
-          >删除</el-button>
+            >删除</el-button
+          >
         </template>
 
         <!-- <el-button type="primary" size="mini" icon="el-icon-delete" @click="removeReagent">删除</el-button> -->

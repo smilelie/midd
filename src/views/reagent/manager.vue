@@ -2,7 +2,11 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="16">
-        <el-input v-model="searchText" placeholder="请输入查找的药品" @keyup.enter.native="onSearch" />
+        <el-input
+          v-model="searchText"
+          placeholder="请输入查找的药品"
+          @keyup.enter.native="onSearch"
+        />
       </el-col>
       <el-col :span="4">
         <el-button type="primary" @click="onSearch">查找</el-button>
@@ -10,11 +14,11 @@
 
       <el-col :span="4">
         <router-link :to="'/reagent/create/'">
-          <el-button type="primary" @click="onCreate">添加新试剂</el-button>
+          <el-button type="success" @click="onCreate">添加新试剂</el-button>
         </router-link>
       </el-col>
     </el-row>
-    <br>
+    <br />
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -43,16 +47,28 @@
       <el-table-column label="重量/容量">
         <template slot-scope="scope">{{ scope.row.weight }}</template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="物理状态" width="90" align="center">
+      <el-table-column
+        class-name="status-col"
+        label="物理状态"
+        width="90"
+        align="center"
+      >
         <template slot-scope="scope">{{ scope.row.status }}</template>
       </el-table-column>
       <!-- 危险、易燃易爆、普通 -->
       <el-table-column class-name="status-col" label="管控级别" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.level | levelFilter">{{ scope.row.level }}</el-tag>
+          <el-tag :type="scope.row.level | levelFilter">{{
+            scope.row.level
+          }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column class-name="option-button" label="试剂操作" width="240" align="center">
+      <el-table-column
+        class-name="option-button"
+        label="试剂操作"
+        width="240"
+        align="center"
+      >
         <el-button type="primary" size="mini">查看</el-button>
         <el-button type="primary" size="mini">取出</el-button>
         <el-button type="primary" size="mini">归还</el-button>
