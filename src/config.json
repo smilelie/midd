@@ -2,8 +2,8 @@
   "appId": "jsl",
   "apiSvc": {
     "svc": [
-      "http://192.168.10.56:8080/jsl/apiSvc",
-      "http://192.168.10.56:8080/jsl/apiSvc"
+      "http://192.168.1.101:8080/jsl/apiSvc",
+      "http://192.168.1.101:8080/jsl/apiSvc"
     ]
   }
 }

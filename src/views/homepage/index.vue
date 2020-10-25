@@ -13,13 +13,11 @@
       </el-row>
       <el-row type="flex" justify="center">
         <router-link to="/reagent/manager">
-          <el-button type="primary" size="small">试剂管理</el-button>
+          <el-button type="primary">试剂管理</el-button>
         </router-link>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-button type="primary" size="mini" @click="logout"
-          >重新登录</el-button
-        >
+        <el-button type="primary" @click="logout">重新登录</el-button>
       </el-row>
     </div>
   </div>
@@ -76,8 +74,8 @@ export default {
 }
 
 .el-button {
-  font-size: 16px;
-  margin: 20px;
-  padding: 12px 60px;
+  font-size: 64px;
+  margin: 30px;
+  padding: 24px 80px;
 }
 </style>
