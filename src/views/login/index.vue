@@ -168,7 +168,7 @@ $cursor: #fff;
 .login-container {
   .el-input {
     display: inline-block;
-    height: 47px;
+    height: 48px;
     width: 85%;
 
     input {
@@ -178,7 +178,7 @@ $cursor: #fff;
       border-radius: 0px;
       padding: 4px 5px 4px 15px;
       color: $light_gray;
-      height: 18px;
+      height: 36px;
       caret-color: $cursor;
 
       &:-webkit-autofill {
@@ -193,7 +193,7 @@ $cursor: #fff;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
-    // line-height: 30px;
+    line-height: 48px;
   }
 }
 </style>
@@ -211,15 +211,25 @@ $light_gray: #eee;
 
   .login-form {
     position: relative;
-    width: 50%;
+    width: 80%;
     max-width: 100%;
     padding: 15% 10% 0;
     margin: 0 auto;
     overflow: hidden;
   }
 
+  .el-input {
+    height: 60px;
+    font-size: 32px;
+    padding: 0;
+  }
+
+  .el-button {
+    font-size: 32px;
+  }
+
   .tips {
-    font-size: 14px;
+    font-size: 28px;
     color: #fff;
     margin-bottom: 10px;
 
@@ -240,11 +250,10 @@ $light_gray: #eee;
 
   .title-container {
     position: relative;
-
     .title {
-      font-size: 26px;
+      font-size: 48px;
       color: $light_gray;
-      margin: 0px auto 40px auto;
+      margin: 0px auto 80px auto;
       text-align: center;
       font-weight: bold;
     }
@@ -254,7 +263,7 @@ $light_gray: #eee;
     position: absolute;
     right: 10px;
     top: 7px;
-    font-size: 16px;
+    font-size: 32px;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
